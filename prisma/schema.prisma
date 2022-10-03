@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  full_name String
+  password  String
+  token     String?
+  status    UserStatus @default(ACTIVE)
+  timestamp DateTime   @default(now())
+}
+
+model Sport {
+  id         String      @id @default(uuid())
+  sport_id   String      @unique
+  name       String
+  live_url   String
+  highlights Highlight[]
+  blogs      Blog[]
+}
+
+model Highlight {
+  id        String   @id @default(uuid())
+  name      String
+  source    String
+  sport_id  String
+  sport     Sport    @relation(fields: [sport_id], references: [sport_id])
+  timestamp DateTime @default(now())
+}
+
+model Blog {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  sport_id  String
+  sport     Sport    @relation(fields: [sport_id], references: [sport_id])
+  timestamp DateTime @default(now())
+}
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  timestamp DateTime @default(now())
+}
