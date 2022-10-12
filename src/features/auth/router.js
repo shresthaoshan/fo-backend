@@ -13,4 +13,7 @@ router.post("/signin", captcha, controller.postSignin);
 router.post("/register", captcha, controller.postRegistration);
 router.post("/signout", controller.postSignOut);
 
+router.post("/request-reset", captcha, controller.postResetRequest);
+router.put("/reset", captcha, controller.putPasswordReset);
+
 export default router;

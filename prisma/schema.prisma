@@ -15,13 +15,19 @@ enum UserStatus {
   SUSPENDED
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id        String     @id @default(uuid())
   email     String     @unique
   full_name String
   password  String
-  token     String?
+  role      UserRole @default(USER)
   status    UserStatus @default(ACTIVE)
+  token     String?
   timestamp DateTime   @default(now())
 }
 
@@ -30,6 +36,7 @@ model Sport {
   sport_id   String      @unique
   name       String
   live_url   String
+  thumbnail  String
   highlights Highlight[]
   blogs      Blog[]
 }
@@ -55,5 +62,6 @@ model Blog {
 model News {
   id        String   @id @default(uuid())
   title     String
+  thumbnail String
   timestamp DateTime @default(now())
 }

@@ -19,6 +19,7 @@ export const getUsers = async (index = 0) => {
 			id: true,
 			status: true,
 			timestamp: true,
+			role: true,
 		},
 	});
 };

@@ -15,11 +15,12 @@ export const getSportsList = async (req, res) => {
  * @type import("express").Handler
  */
 export const postAddSport = async (req, res) => {
-	const { name = "", live_url = "" } = req.body;
+	const { name = "", thumbnail = "", live_url = "" } = req.body;
 
 	if (!name.length) throw new Error("Name of sport is required.");
+	if (!thumbnail.length) throw new Error("Thumbnail link of sport is required.");
 
-	const sport = await model.createSport(name, live_url);
+	const sport = await model.createSport(name, thumbnail, live_url);
 
 	res.json(sport);
 };
@@ -29,9 +30,9 @@ export const postAddSport = async (req, res) => {
  */
 export const updateLiveUrl = async (req, res) => {
 	const sport_id = req.params.sport_id;
-	const { live_url = "" } = req.body;
+	const { live_url = "", thumbnail = "" } = req.body;
 
-	const sport = await model.updateLiveUrl(sport_id, live_url);
+	const sport = await model.updateLiveUrl(sport_id, live_url, thumbnail);
 
 	res.json(sport);
 };

@@ -6,6 +6,7 @@ import user from "../features/user/index.js";
 import blog from "../features/blog/index.js";
 import highlights from "../features/highlights/index.js";
 import sports from "../features/sport/index.js";
+import news from "../features/news/index.js";
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use("/users", user.router);
 router.use("/highlights", highlights.router);
 router.use("/sports", sports.router);
 router.use("/blogs", blog.router);
+router.use("/news", news.router);
 
 export default router;

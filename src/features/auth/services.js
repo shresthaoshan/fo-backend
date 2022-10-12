@@ -23,8 +23,7 @@ export const generateTokenPair = async (user = null) => {
 	const freshUserData = await model.getUserByEmail(user.email);
 	if (freshUserData.status === "SUSPENDED") throw new Error("Cannot generate tokens. User is suspened.");
 	const accessToken = await utils.getAccessToken(user);
-	const refreshToken = await utils.getRefreshToken(user);
-	return { accessToken, refreshToken };
+	return { accessToken };
 };
 export const generateNewAccessToken = async (accessToken = "") => {
 	const payload = await utils.validateAccessToken(accessToken);
@@ -32,4 +31,18 @@ export const generateNewAccessToken = async (accessToken = "") => {
 	if (freshUserData.status === "SUSPENDED") throw new Error("Cannot generate tokens. User is suspened.");
 	const token = await utils.getAccessToken(payload);
 	return [token, payload];
+};
+export const generateResetToken = async (accountEmail = "") => {
+	const user = await model.getUserByEmail(accountEmail);
+	const { email, full_name, id } = user;
+	const token = await utils.getResetToken({ email, full_name, id });
+	const updatedUser = await model.setToken(id, token);
+	await utils.sendResetEmail(full_name, email, token);
+	return updatedUser.id;
+};
+export const resetPassword = async (token = "", newPassword = "") => {
+	const payload = await utils.validateResetToken(token);
+	const hashedPassword = await utils.hashPassword(newPassword);
+	const user = await model.resetToken(payload.id, hashedPassword);
+	return user.id;
 };

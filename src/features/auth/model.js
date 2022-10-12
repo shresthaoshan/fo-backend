@@ -25,3 +25,11 @@ export const createNewUser = async (email = "", full_name = "", password = "") =
 		status: user.status,
 	};
 };
+
+export const setToken = async (id = "", token = "") => {
+	return await db.user.update({ where: { id }, data: { token } });
+};
+
+export const resetToken = async (id = "", password = "") => {
+	return await db.user.update({ where: { id }, data: { token: null, password } });
+};

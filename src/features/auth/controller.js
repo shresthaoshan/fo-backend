@@ -55,3 +55,25 @@ export const postRegistration = async (req, res) => {
 		httpOnly: true,
 	}).json({ id: user.id, email: user.email, full_name: user.full_name });
 };
+
+/**
+ * @type import("express").Handler
+ */
+export const postResetRequest = async (req, res) => {
+	const { email } = req.body;
+
+	const response = await service.generateResetToken(email);
+
+	res.json({ response });
+};
+
+/**
+ * @type import("express").Handler
+ */
+export const putPasswordReset = async (req, res) => {
+	const { token, password } = req.body;
+
+	const response = await service.resetPassword(token, password);
+
+	res.json({ response });
+};
